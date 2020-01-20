@@ -76,8 +76,6 @@
 		<module>gateway</module>
 		<module>auth-service</module>
 		<module>account-service</module>
-		<module>spring-config-server</module>
-		<module>eureka-server</module>
 	</modules>
 
 	<build>
