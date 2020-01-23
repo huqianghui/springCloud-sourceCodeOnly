@@ -24,9 +24,6 @@ security:
     resource:
       user-info-uri: http://localhost:5000/users/current
 
-server:
-  port: 4000
-
 hystrix:
   command:
     default:
