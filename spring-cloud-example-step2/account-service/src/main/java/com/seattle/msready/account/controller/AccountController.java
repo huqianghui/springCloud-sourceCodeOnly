@@ -21,8 +21,9 @@ public class AccountController {
 	}
 
 	@RequestMapping(path = "/current", method = RequestMethod.GET)
-	public Account getCurrentAccount(String username) {
-		return accountService.findByName(username);
+	public Account getCurrentAccount(String username) throws Exception{
+		Thread.sleep(50L);
+		return new Account();
 	}
 
 	@RequestMapping(path = "/current", method = RequestMethod.PUT)

@@ -3,9 +3,9 @@ package com.seattle.msready.account.controller;
 import com.seattle.msready.account.domain.User;
 import com.seattle.msready.account.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,7 +16,15 @@ public class UserController {
     UserRepository userRepository;
 
     @RequestMapping(path = "/current", method = RequestMethod.GET)
-    public User getCurrentAccount(@RequestParam("username") String username) {
-        return userRepository.findByUsername(username);
+    public User getCurrentAccount() throws Exception {
+        Thread.sleep(50);
+        User user = new User();
+        user.setUsername("test");
+        return user;
+    }
+
+    @RequestMapping(path = "/{name}", method = RequestMethod.GET)
+    public User getUserByName(@PathVariable String name) {
+        return userRepository.findByUsername(name);
     }
 }

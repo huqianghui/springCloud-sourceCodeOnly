@@ -44,7 +44,7 @@
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                    .antMatchers("/oauth/**","/actuator/**","/accounts/").permitAll()
+                    .antMatchers("/**","/oauth/**","/actuator/**","/accounts/").permitAll()
                     .antMatchers("/","/favicon.ico","/js/**","/css/**","/fonts/**","/images/**","/*.html").permitAll()
                     .anyRequest().authenticated();
         }

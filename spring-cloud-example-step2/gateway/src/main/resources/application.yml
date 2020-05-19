@@ -7,3 +7,9 @@ zuul:
   ribbonIsolationStrategy: THREAD
   threadPool:
     useSeparateThreadPools: true
+management:
+  security:
+    enabled: false
+security:
+  basic:
+    enabled: false
