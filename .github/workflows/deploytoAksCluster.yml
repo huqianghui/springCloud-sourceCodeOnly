@@ -1,0 +1,50 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: aml4testacr.azurecr.io
+        username: ${{ secrets.acr_aml4testacr_username }}
+        password: ${{ secrets.acr_aml4testacr_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/spring-cloud-entire-solution-example/account-service" -f  "spring-cloud-entire-solution-example/account-service/Dockerfile" -t aml4testacr.azurecr.io/test111:${{ github.sha }} --label dockerfile-path=spring-cloud-entire-solution-example/account-service/Dockerfile
+        docker push aml4testacr.azurecr.io/test111:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_test111_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep test111a976 | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace test111a976`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: test111a976
+        container-registry-url: aml4testacr.azurecr.io
+        container-registry-username: ${{ secrets.acr_aml4testacr_username }}
+        container-registry-password: ${{ secrets.acr_aml4testacr_password }}
+        secret-name: test111dockerauth
+       
+    - uses: azure/k8s-deploy@v1.2
+      with:
+        namespace: test111a976
+        manifests: |
+          manifests/deployment.yml
+          manifests/service.yml
+        images: |
+          aml4testacr.azurecr.io/test111:${{ github.sha }}
+        imagepullsecrets: |
+          test111dockerauth
