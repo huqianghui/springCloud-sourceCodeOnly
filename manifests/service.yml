@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: "test111-aade"
+    labels:
+        app: "test111-aade"
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 6000
+      targetPort: 6000
+      protocol: TCP
+      name: http
+    selector:
+        app: "test111-aade"
