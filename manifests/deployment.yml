@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "test111-aade"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "test111-aade"
+  template:
+    metadata:
+      labels:
+        app: "test111-aade"
+    spec:
+      containers:
+        - name: "test111-aade"
+          image: "aml4testacr.azurecr.io/test111"
+          ports:
+          - containerPort: 6000
